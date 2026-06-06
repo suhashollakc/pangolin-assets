@@ -1,0 +1,164 @@
+/* =============================================================================
+   Overhead — ISS Tracker · dark, spacious, Apple-inspired night UI
+   ============================================================================= */
+:root {
+  --bg:        #05070f;
+  --bg-2:      #0a0e1c;
+  --panel:     rgba(255,255,255,.04);
+  --panel-2:   rgba(255,255,255,.06);
+  --line:      rgba(255,255,255,.10);
+  --ink:       #f4f6fb;
+  --ink-soft:  #aab3c8;
+  --ink-faint: #717c95;
+  --cyan:      #5ad0ff;
+  --cyan-deep: #2aa7e0;
+  --amber:     #ffcc66;
+  --green:     #6ee7a8;
+  --red:       #ff6b81;
+  --sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+          "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  --r: 18px; --r-lg: 26px;
+  --ease: cubic-bezier(.22,.61,.36,1);
+  --maxw: 1180px;
+}
+
+* , *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--sans); color: var(--ink); line-height: 1.5;
+  background:
+    radial-gradient(120% 80% at 80% -10%, rgba(90,208,255,.10), transparent 55%),
+    radial-gradient(90% 70% at 0% 0%, rgba(120,120,255,.08), transparent 50%),
+    var(--bg);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased; min-height: 100vh;
+}
+a { color: inherit; text-decoration: none; }
+button { font: inherit; cursor: pointer; color: inherit; }
+img, svg, canvas { display: block; max-width: 100%; }
+::selection { background: rgba(90,208,255,.28); }
+
+.wrap { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 22px; }
+.muted { color: var(--ink-soft); }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+/* ---------------------------------------------------------------- header */
+.top {
+  position: sticky; top: 0; z-index: 50;
+  backdrop-filter: saturate(160%) blur(18px); -webkit-backdrop-filter: saturate(160%) blur(18px);
+  background: rgba(5,7,15,.6); border-bottom: 1px solid var(--line);
+}
+.top__in { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+.brand { display: flex; align-items: center; gap: 11px; font-weight: 650; letter-spacing: -.01em; font-size: 18px; }
+.brand .dot { width: 11px; height: 11px; border-radius: 50%; background: var(--cyan);
+  box-shadow: 0 0 0 4px rgba(90,208,255,.16), 0 0 14px 2px rgba(90,208,255,.7); animation: pulse 2.6s var(--ease) infinite; }
+.brand small { color: var(--ink-soft); font-weight: 500; font-size: 12.5px; }
+@keyframes pulse { 0%,100%{ box-shadow:0 0 0 4px rgba(90,208,255,.16),0 0 14px 2px rgba(90,208,255,.6);} 50%{ box-shadow:0 0 0 7px rgba(90,208,255,.05),0 0 20px 4px rgba(90,208,255,.85);} }
+.top__actions { display: flex; gap: 10px; align-items: center; }
+
+/* ---------------------------------------------------------------- buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: .5em; padding: 10px 16px;
+  border-radius: 980px; font-size: 14.5px; font-weight: 550; border: 1px solid var(--line);
+  background: var(--panel); transition: .22s var(--ease);
+}
+.btn:hover { background: var(--panel-2); transform: translateY(-1px); }
+.btn--cyan { background: linear-gradient(180deg, var(--cyan), var(--cyan-deep)); color: #04121c; border-color: transparent; font-weight: 650; }
+.btn--cyan:hover { box-shadow: 0 8px 26px rgba(42,167,224,.35); }
+.btn--sm { padding: 7px 12px; font-size: 13px; }
+.btn[disabled] { opacity: .45; pointer-events: none; }
+
+/* ---------------------------------------------------------------- hero */
+.hero { padding: clamp(34px,6vw,64px) 0 8px; }
+.kicker { font-size: 12.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--cyan); font-weight: 650; }
+.hero h1 { font-size: clamp(34px,6vw,62px); line-height: 1.02; letter-spacing: -.03em; font-weight: 680; margin-top: 12px; }
+.hero p.lead { color: var(--ink-soft); font-size: clamp(16px,2vw,20px); max-width: 56ch; margin-top: 16px; }
+
+/* ---------------------------------------------------------------- layout grid */
+.deck { display: grid; grid-template-columns: 1.5fr 1fr; gap: 22px; padding: 30px 0 70px; align-items: start; }
+@media (max-width: 920px) { .deck { grid-template-columns: 1fr; } }
+
+.card {
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--r-lg);
+  padding: 20px; backdrop-filter: blur(6px);
+}
+.card h2 { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); font-weight: 650; margin-bottom: 16px; }
+.card + .card { margin-top: 22px; }
+
+/* ---------------------------------------------------------------- map */
+.mapwrap { position: relative; border-radius: var(--r); overflow: hidden; border: 1px solid var(--line);
+  background: #060d1c; }
+.mapwrap canvas { width: 100%; height: auto; display: block; }
+.map-legend { position: absolute; left: 12px; bottom: 10px; display: flex; gap: 14px; font-size: 12px; color: var(--ink-soft);
+  background: rgba(5,7,15,.5); padding: 6px 10px; border-radius: 980px; backdrop-filter: blur(6px); }
+.map-legend i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+
+/* ---------------------------------------------------------------- stat grid */
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border-radius: var(--r); overflow: hidden; }
+.stat { background: var(--bg-2); padding: 16px 16px 14px; }
+.stat .k { font-size: 12px; color: var(--ink-soft); letter-spacing: .03em; }
+.stat .v { font-size: 26px; font-weight: 640; letter-spacing: -.02em; margin-top: 4px; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.stat .u { font-size: 13px; color: var(--ink-soft); font-family: var(--sans); font-weight: 500; margin-left: 3px; }
+
+/* status pill */
+.pill { display: inline-flex; align-items: center; gap: 7px; padding: 6px 13px; border-radius: 980px;
+  font-size: 13.5px; font-weight: 600; border: 1px solid var(--line); background: var(--panel); }
+.pill i { width: 8px; height: 8px; border-radius: 50%; background: var(--ink-faint); }
+.pill.is-up { color: var(--green); border-color: rgba(110,231,168,.35); background: rgba(110,231,168,.08); }
+.pill.is-up i { background: var(--green); box-shadow: 0 0 10px var(--green); }
+.pill.is-visible { color: var(--amber); border-color: rgba(255,204,102,.4); background: rgba(255,204,102,.08); }
+.pill.is-visible i { background: var(--amber); box-shadow: 0 0 10px var(--amber); }
+
+/* ---------------------------------------------------------------- passes list */
+.passes { display: flex; flex-direction: column; gap: 10px; }
+.pass { display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center;
+  padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--r); background: var(--bg-2);
+  transition: .22s var(--ease); }
+.pass:hover { border-color: rgba(90,208,255,.4); transform: translateX(2px); }
+.pass__when { text-align: center; min-width: 58px; }
+.pass__when .d { font-size: 12px; color: var(--ink-soft); }
+.pass__when .t { font-size: 19px; font-weight: 640; font-family: var(--mono); }
+.pass__mid .dir { font-weight: 600; }
+.pass__mid .sub { font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; }
+.pass__el { text-align: right; }
+.pass__el .deg { font-size: 20px; font-weight: 660; font-family: var(--mono); }
+.pass__el .lab { font-size: 11px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: .08em; }
+.badge { font-size: 11px; font-weight: 700; letter-spacing: .04em; padding: 3px 8px; border-radius: 980px;
+  background: rgba(255,204,102,.14); color: var(--amber); border: 1px solid rgba(255,204,102,.35); }
+
+/* ---------------------------------------------------------------- location bar */
+.locbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.locbar input { background: var(--bg-2); border: 1px solid var(--line); color: var(--ink); border-radius: 12px;
+  padding: 9px 12px; font: inherit; font-size: 14px; width: 120px; }
+.locbar input:focus { outline: none; border-color: var(--cyan); }
+.loc-note { font-size: 13px; color: var(--ink-soft); }
+
+/* ---------------------------------------------------------------- banner */
+.banner { border-radius: var(--r); padding: 14px 16px; font-size: 14.5px; border: 1px solid var(--line);
+  background: var(--panel); display: flex; gap: 10px; align-items: flex-start; }
+.banner--warn { border-color: rgba(255,204,102,.35); background: rgba(255,204,102,.07); color: #ffe2a6; }
+.banner--err  { border-color: rgba(255,107,129,.4); background: rgba(255,107,129,.08); color: #ffc4cd; }
+
+/* ---------------------------------------------------------------- footer */
+.foot { border-top: 1px solid var(--line); padding: 26px 0 60px; color: var(--ink-soft); font-size: 13px;
+  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+/* ================================================================= CEILING MODE */
+.ceiling { margin: 0; background: #000; overflow: hidden; height: 100vh; }
+.dome-stage { position: fixed; inset: 0; display: grid; place-items: center; }
+#dome { width: min(100vw, 100vh); height: min(100vw, 100vh); }
+.ceiling-ui { position: fixed; inset: 0; pointer-events: none; }
+.ceiling-top { position: absolute; top: 18px; left: 0; right: 0; text-align: center; }
+.ceiling-top .big { font-size: clamp(26px,6vw,52px); font-weight: 300; letter-spacing: .01em; font-family: var(--mono);
+  text-shadow: 0 0 30px rgba(90,208,255,.5); }
+.ceiling-top .lab { font-size: 13px; letter-spacing: .22em; text-transform: uppercase; color: var(--cyan); margin-bottom: 6px; }
+.ceiling-top .sub { font-size: 15px; color: var(--ink-soft); margin-top: 8px; }
+.ceiling-controls { position: absolute; bottom: 20px; left: 0; right: 0; display: flex; gap: 10px; justify-content: center;
+  pointer-events: auto; opacity: .25; transition: opacity .3s var(--ease); }
+.ceiling-controls:hover { opacity: 1; }
+.ceiling-exit { position: absolute; top: 16px; right: 18px; pointer-events: auto; opacity: .3; transition: opacity .3s; }
+.ceiling-exit:hover { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; } }

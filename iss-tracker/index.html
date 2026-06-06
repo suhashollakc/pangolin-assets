@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Overhead — Live ISS Tracker</title>
+  <meta name="description" content="Track the International Space Station live, see when it passes over you, and get alerts. Plus a ceiling-projection sky mode." />
+  <meta name="theme-color" content="#05070f" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%2305070f'/%3E%3Ccircle cx='32' cy='32' r='8' fill='%235ad0ff'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="top">
+    <div class="wrap top__in">
+      <a class="brand" href="index.html"><span class="dot"></span> Overhead <small>ISS tracker</small></a>
+      <div class="top__actions">
+        <button class="btn btn--sm" id="notifyBtn">🔔 Enable alerts</button>
+        <a class="btn btn--sm btn--cyan" href="ceiling.html">✦ Ceiling mode</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="wrap hero">
+    <p class="kicker">International Space Station · live</p>
+    <h1>Know the moment<br>it passes overhead.</h1>
+    <p class="lead">The ISS orbits Earth every ~90 minutes at 28,000 km/h. Track it live, see its path across your own sky, and get an alert the moment it’s about to rise above you.</p>
+  </section>
+
+  <div class="wrap">
+    <div id="banner" class="banner" style="display:none"></div>
+  </div>
+
+  <!-- MAIN DECK -->
+  <main class="wrap deck">
+    <!-- LEFT: map + status -->
+    <section>
+      <div class="card">
+        <h2>Live position</h2>
+        <div class="mapwrap">
+          <canvas id="map" width="1024" height="512" aria-label="World map showing the ISS position"></canvas>
+          <div class="map-legend">
+            <span><i style="background:#fff"></i>ISS</span>
+            <span><i style="background:#ffcc66"></i>You</span>
+            <span><i style="background:#5ad0ff"></i>Ground track</span>
+          </div>
+        </div>
+        <div style="margin-top:16px" class="pill" id="status"><i></i><span id="status-label">Acquiring orbit…</span></div>
+      </div>
+
+      <div class="card">
+        <h2>Telemetry</h2>
+        <div class="stats">
+          <div class="stat"><div class="k">Latitude</div><div class="v"><span id="s-lat">–</span><span class="u">°</span></div></div>
+          <div class="stat"><div class="k">Longitude</div><div class="v"><span id="s-lon">–</span><span class="u">°</span></div></div>
+          <div class="stat"><div class="k">Altitude</div><div class="v"><span id="s-alt">–</span><span class="u">km</span></div></div>
+          <div class="stat"><div class="k">Speed</div><div class="v"><span id="s-speed">–</span><span class="u">km/h</span></div></div>
+          <div class="stat"><div class="k">Distance to you</div><div class="v"><span id="s-ground">–</span><span class="u">km</span></div></div>
+          <div class="stat"><div class="k">Elevation in your sky</div><div class="v"><span id="s-el">–</span><span class="u">°</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: next pass + passes + location -->
+    <section>
+      <div class="card" style="text-align:center">
+        <h2>Next pass over you</h2>
+        <div style="font-family:var(--mono);font-size:46px;font-weight:680;letter-spacing:-.02em" id="np-count">–</div>
+        <div class="muted" id="np-info" style="margin-top:6px">calculating…</div>
+      </div>
+
+      <div class="card">
+        <h2>Upcoming passes · next 48h</h2>
+        <div class="passes" id="passes"><p class="muted">Calculating passes…</p></div>
+      </div>
+
+      <div class="card">
+        <h2>Your location</h2>
+        <div class="locbar">
+          <button class="btn" id="geoBtn">📍 Use my location</button>
+          <input id="latIn" inputmode="decimal" placeholder="lat" />
+          <input id="lonIn" inputmode="decimal" placeholder="lon" />
+          <button class="btn" id="setLoc">Set</button>
+        </div>
+        <p class="loc-note" id="locNote" style="margin-top:12px"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <span id="tle-time">Loading orbit data…</span>
+    <span>Built with satellite.js (SGP4) · orbit data from Celestrak · no tracking, runs in your browser</span>
+  </footer>
+
+  <script src="assets/js/iss.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

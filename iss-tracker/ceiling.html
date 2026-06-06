@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Ceiling Mode — Overhead</title>
+  <meta name="description" content="A planetarium sky dome of the ISS, made to project onto your ceiling." />
+  <meta name="theme-color" content="#000000" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23000'/%3E%3Ccircle cx='32' cy='32' r='8' fill='%235ad0ff'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body class="ceiling">
+  <div class="dome-stage">
+    <canvas id="dome"></canvas>
+  </div>
+
+  <div class="ceiling-ui">
+    <div class="ceiling-top">
+      <div class="lab" id="c-lab">Tracking</div>
+      <div class="big" id="c-big">—</div>
+      <div class="sub" id="c-sub">acquiring orbit…</div>
+    </div>
+
+    <a class="btn btn--sm ceiling-exit" href="index.html">← Dashboard</a>
+
+    <div class="ceiling-controls">
+      <span class="btn btn--sm" id="c-loc" style="pointer-events:none">📍 location</span>
+      <button class="btn btn--sm" id="c-flip">View: Map</button>
+      <button class="btn btn--sm" id="c-full">⛶ Fullscreen</button>
+    </div>
+  </div>
+
+  <script src="assets/js/iss.js"></script>
+  <script src="assets/js/ceiling.js"></script>
+</body>
+</html>
