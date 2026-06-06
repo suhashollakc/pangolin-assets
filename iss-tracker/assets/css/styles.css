@@ -150,11 +150,17 @@ img, svg, canvas { display: block; max-width: 100%; }
 .dome-stage { position: fixed; inset: 0; display: grid; place-items: center; }
 #dome { width: min(100vw, 100vh); height: min(100vw, 100vh); }
 .ceiling-ui { position: fixed; inset: 0; pointer-events: none; }
-.ceiling-top { position: absolute; top: 18px; left: 0; right: 0; text-align: center; }
-.ceiling-top .big { font-size: clamp(26px,6vw,52px); font-weight: 300; letter-spacing: .01em; font-family: var(--mono);
-  text-shadow: 0 0 30px rgba(90,208,255,.5); }
-.ceiling-top .lab { font-size: 13px; letter-spacing: .22em; text-transform: uppercase; color: var(--cyan); margin-bottom: 6px; }
-.ceiling-top .sub { font-size: 15px; color: var(--ink-soft); margin-top: 8px; }
+.ceiling-top { position: absolute; top: clamp(20px,5vh,52px); left: 0; right: 0; text-align: center;
+  padding: 10px; }
+.ceiling-top::before { content: ""; position: absolute; left: 50%; top: 50%; width: min(70vw,560px); height: 240px;
+  transform: translate(-50%,-50%); pointer-events: none; z-index: -1;
+  background: radial-gradient(closest-side, rgba(2,6,16,.6), rgba(2,6,16,0)); }
+.ceiling-top .big { font-size: clamp(30px,7vw,64px); font-weight: 250; letter-spacing: .02em; font-family: var(--mono);
+  line-height: 1; text-shadow: 0 0 28px rgba(90,208,255,.55), 0 0 70px rgba(90,208,255,.25); }
+.ceiling-top .lab { font-size: clamp(11px,1.4vw,13px); letter-spacing: .3em; text-transform: uppercase; color: var(--cyan);
+  margin-bottom: 12px; text-shadow: 0 0 16px rgba(90,208,255,.6); }
+.ceiling-top .sub { font-size: clamp(13px,1.7vw,16px); color: #c4d2ec; margin-top: 12px; font-weight: 450;
+  text-shadow: 0 1px 12px rgba(0,0,0,.8); }
 .ceiling-controls { position: absolute; bottom: 20px; left: 0; right: 0; display: flex; gap: 10px; justify-content: center;
   pointer-events: auto; opacity: .25; transition: opacity .3s var(--ease); }
 .ceiling-controls:hover { opacity: 1; }
