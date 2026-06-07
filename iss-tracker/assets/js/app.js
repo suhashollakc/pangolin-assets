@@ -16,6 +16,7 @@
 
   var observer = loadLoc() || { latDeg: 51.4779, lonDeg: -0.0015, altKm: 0, label: "Greenwich (default)" };
   var satrec = null, passes = [], tleInfo = null;
+  var landRings = null;   // coastline polygons [ [ [lon,lat], ... ], ... ]
 
   /* ---------------------------------------------------------- formatting */
   function fmtTime(d) { return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }); }
@@ -45,10 +46,56 @@
   function x2(lon) { return (lon + 180) / 360 * MW; }
   function y2(lat) { return (90 - lat) / 180 * MH; }
 
+  /* load real-world coastlines (Natural Earth land, 110m) from a CDN so the
+     map reads as Earth. Fails silently → falls back to the bare graticule. */
+  function loadScript(src) {
+    return new Promise(function (res, rej) {
+      var s = document.createElement("script"); s.src = src; s.async = true;
+      s.onload = res; s.onerror = rej; document.head.appendChild(s);
+    });
+  }
+  function collectRings(geom, out) {
+    if (!geom) return;
+    if (geom.type === "Polygon") geom.coordinates.forEach(function (r) { out.push(r); });
+    else if (geom.type === "MultiPolygon") geom.coordinates.forEach(function (p) { p.forEach(function (r) { out.push(r); }); });
+  }
+  function loadLand() {
+    loadScript("https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js")
+      .then(function () { return fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json"); })
+      .then(function (r) { return r.json(); })
+      .then(function (topo) {
+        var feat = window.topojson.feature(topo, topo.objects.land);
+        var out = [];
+        (feat.features || [feat]).forEach(function (f) { collectRings(f.geometry, out); });
+        landRings = out;
+      })
+      .catch(function () { /* keep graticule-only map */ });
+  }
+  function drawCoastlines() {
+    if (!landRings) return;
+    ctx.beginPath();
+    for (var i = 0; i < landRings.length; i++) {
+      var ring = landRings[i], started = false, prevLon = null;
+      for (var j = 0; j < ring.length; j++) {
+        var lon = ring[j][0], lat = ring[j][1];
+        if (prevLon !== null && Math.abs(lon - prevLon) > 180) started = false; // seam break
+        var X = x2(lon), Y = y2(lat);
+        if (!started) { ctx.moveTo(X, Y); started = true; } else ctx.lineTo(X, Y);
+        prevLon = lon;
+      }
+    }
+    ctx.lineJoin = "round"; ctx.lineCap = "round";
+    ctx.strokeStyle = "rgba(70,140,180,.18)"; ctx.lineWidth = 2.4; ctx.stroke(); // underglow
+    ctx.strokeStyle = "rgba(120,205,240,.62)"; ctx.lineWidth = 1; ctx.stroke();  // coastline
+  }
+
   function drawMap(now) {
     ctx.clearRect(0, 0, MW, MH);
-    // backdrop
+    // backdrop (ocean)
     ctx.fillStyle = "#071226"; ctx.fillRect(0, 0, MW, MH);
+
+    // continents
+    drawCoastlines();
 
     // day / night shading
     var ss = ISS.subsolar(now), phiS = ss.lat, lamS = ss.lon;
@@ -307,6 +354,7 @@
 
   function boot() {
     initMap();
+    loadLand();
     initLocation();
     initNotify();
 

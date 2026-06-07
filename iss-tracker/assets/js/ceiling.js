@@ -38,7 +38,7 @@
     canvas.width = size * dpr; canvas.height = size * dpr;
     canvas.style.width = size + "px"; canvas.style.height = size + "px";
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    cx = size / 2; cy = size / 2; R = size * 0.46;
+    cx = size / 2; cy = size / 2; R = size * 0.43;   // leaves room for compass labels
     buildCosmic();
   }
 
@@ -191,15 +191,15 @@
     // compass labels
     ctx.textAlign = "center"; ctx.textBaseline = "middle";
     [["N", 0], ["E", 90], ["S", 180], ["W", 270]].forEach(function (d) {
-      var p = ringPoint(d[1], R + size * 0.045);
+      var p = ringPoint(d[1], R + size * 0.038);
       ctx.fillStyle = "rgba(220,235,255,.92)";
-      ctx.font = "650 " + Math.round(size * 0.028) + "px -apple-system,system-ui,sans-serif";
+      ctx.font = "650 " + Math.round(size * 0.026) + "px -apple-system,system-ui,sans-serif";
       ctx.fillText(d[0], p.x, p.y);
     });
     [["NE", 45], ["SE", 135], ["SW", 225], ["NW", 315]].forEach(function (d) {
-      var p = ringPoint(d[1], R + size * 0.04);
+      var p = ringPoint(d[1], R + size * 0.03);
       ctx.fillStyle = "rgba(160,185,225,.5)";
-      ctx.font = "500 " + Math.round(size * 0.018) + "px -apple-system,system-ui,sans-serif";
+      ctx.font = "500 " + Math.round(size * 0.017) + "px -apple-system,system-ui,sans-serif";
       ctx.fillText(d[0], p.x, p.y);
     });
   }
